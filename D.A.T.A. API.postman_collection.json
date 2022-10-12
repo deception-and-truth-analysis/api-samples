@@ -1,0 +1,78 @@
+{
+	"info": {
+		"_postman_id": "ee1e500b-cf06-47d4-b07d-4c921cad1292",
+		"name": "D.A.T.A. API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14960903"
+	},
+	"item": [
+		{
+			"name": "Company Exists and Has Score",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Data-Subscription-Key",
+						"value": "{YOUR-KEY-HERE}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n  companiespaged (\r\n    orderBy: { path: \"Name\", descending: false }\r\n    where: { groupedExpressions: [\r\n      { path: \"primaryTicker.Name\", comparison: equal, value: \"MSFT\" }\r\n      { path: \"hasCompanyDataScore\", comparison: equal, value: \"true\" }\r\n      { path: \"companyDataScore.IsMostRecent\", comparison: equal, value: \"true\" }\r\n    ]}\r\n    first: 50\r\n  ) {\r\n    totalCount\r\n    edges {\r\n      node {\r\n        name,\r\n        primaryTicker {\r\n            name\r\n        },\r\n        companyDataScore {\r\n            document {\r\n                dataScore\r\n            },\r\n            filingDate,\r\n            period {\r\n                year,\r\n                quarter\r\n            }\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://d-a-t-a.azure-api.net/api/v1",
+					"protocol": "https",
+					"host": [
+						"d-a-t-a",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"api",
+						"v1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Companies Exist and Have Score",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Data-Subscription-Key",
+						"value": "{YOUR-KEY-HERE}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n  companiespaged (\r\n    orderBy: { path: \"Name\", descending: false }\r\n    where: { groupedExpressions: [\r\n      { path: \"primaryTicker.Name\", comparison: in, value: [\"MSFT\",\"AAPL\"] }\r\n      { path: \"hasCompanyDataScore\", comparison: equal, value: \"true\" }\r\n      { path: \"companyDataScore.IsMostRecent\", comparison: equal, value: \"true\" }\r\n    ]}\r\n    first: 50\r\n  ) {\r\n    totalCount\r\n    edges {\r\n      node {\r\n        name,\r\n        primaryTicker {\r\n            name\r\n        },\r\n        companyDataScore {\r\n            document {\r\n                dataScore\r\n            },\r\n            filingDate,\r\n            period {\r\n                year,\r\n                quarter\r\n            }\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://d-a-t-a.azure-api.net/api/v1",
+					"protocol": "https",
+					"host": [
+						"d-a-t-a",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"api",
+						"v1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
