@@ -1,0 +1,50 @@
+query {
+  companiespaged (
+    userId: "cce315d2-6cfa-45de-9e2d-9566f00d08c6"
+    orderBy: { path: "CompanyDataScore.FilingDate", descending: false }
+    where: { groupedExpressions: [
+      { path: "HasCompanyDataScore", comparison: equal, value: "true" } # Required
+      { path: "PrimaryIndex.Name", comparison: in, value: ["S&P 500", "Russell 1000", "S&P 400", "S&P 600", "Russell 2000"] } # Delete as appropriate
+      { path: "CompanyDataScore.FinancialDocumentType", comparison: in, value: ["10-K","10-Q","8-K"] } # Delete as appropriate
+      { path: "CompanyDataScore.FilingDate", comparison: greaterThan, value: "2023-11-31T12:00:00" } # Vary this as required to reflect your last poll.
+    ]}
+    first: 30 # Paging value. Required. Please keep to < 500,
+    #skip: 30 # Optional value to skip completed.
+  ) {
+    totalCount
+    edges {
+      node {
+        Company: name
+        Ticker: primaryTicker { name }
+        CIKCode: cIK
+        PrimaryIndex: primaryIndex { name }
+        CompanyDataScore: companyDataScore {
+            FilingDate: filingDate
+            ScorePublishedDate: scorePublishedDate
+            FiscalPeriod: period {
+                year,
+                quarter
+            }
+            DocumentType: financialDocumentType
+            Document: document {
+                DataScore: dataScore,
+                ScorableWordCount: words,
+                FragmentsCount: fragmentsCount,
+                DeceptiveFragmentsCount: deceptiveFragmentsCount
+                DeceptiveFragmentsPercentage: deceptiveFragmentsPercentage
+                TruthfulFragmentsCount: truthfulFragmentsCount
+                TruthfulFragmentsPercentage: truthfulFragmentsPercentage
+                LongTermFocus: longTermFocus
+                ShortTermFocus: shortTermFocus
+                InternalFocus: internalFocus
+                ExternalFocus: externalFocus
+            }
+            DeceptiveFragmentsAverageScore: fragmentsNegativeAverage
+            TruthfulFragmentsAverageSCore: fragmentsPositiveAverage
+            DatabaseRank: dATAbaseComparison { rank }
+            FinancialUncertainty: financialUncertainty
+        }
+      }
+    }
+  }
+}
