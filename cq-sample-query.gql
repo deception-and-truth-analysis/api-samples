@@ -1,6 +1,5 @@
 query {
   companiespaged (
-    userId: "cce315d2-6cfa-45de-9e2d-9566f00d08c6"
     orderBy: { path: "CompanyDataScore.FilingDate", descending: false }
     where: { groupedExpressions: [
       { path: "HasCompanyDataScore", comparison: equal, value: "true" } # Required
